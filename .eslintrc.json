@@ -1,3 +1,28 @@
 {
-  "extends": "next/core-web-vitals"
+  "plugins": ["unused-imports"],
+  "extends": ["next/core-web-vitals", "plugin:import/recommended"],
+  "rules": {
+    "require-await": "error",
+
+    "@typescript-eslint/no-unused-vars": ["off"],
+    "import/no-unresolved": ["off"],
+    "indent": ["error", 2],
+    "import/named": ["off"],
+    "react-hooks/exhaustive-deps": ["off"],
+    "unused-imports/no-unused-imports": "warn",
+    "unused-imports/no-unused-vars": [
+      "warn",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
+      }
+    ]
+  },
+  "parserOptions": {
+    "project": "tsconfig.json"
+  },
+  "ignorePatterns": ["tailwind.config.js", "postcss.config.js", "next.config.js"],
+  "parser": "@typescript-eslint/parser"
 }
