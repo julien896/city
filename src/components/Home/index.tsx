@@ -1,27 +1,57 @@
 
 import React, { useEffect, useState } from 'react'
-import { Autocomplete, TextField } from '@mui/material';
 import { HomeComponent } from './HomeComponent';
 import { HomeRepository } from '../../services/homeRepository';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useMutation } from 'react-query';
 import { City } from '../../models/City';
+import { HomePageForm } from './HomePageForm/HomePageForm';
+import { Moment } from 'moment';
+
+export interface DataType {
+  origin: City[] | [];
+  intermediate: City[] | [];
+  destination: City[] | []
+}
 
 function Home() {
   const repo = new HomeRepository()
   
-  const [value, setValue] = useState<string>('');
-  const [data, setData] = useState<City[] | []>([]);
+  const [value, setValue] = useState<string>('')
+  const [keyValue, setKeyValue] = useState<string>('')
+  const [citiesData, setCitiesData] = useState<DataType>({
+    origin: [],
+    intermediate: [],
+    destination: [],
+  });
 
   const debouncedValue = useDebounce(value, 700)
 
-  const citiesMut = useMutation(repo.getCities, {
+  const [date, setDate] = useState<Moment | null>(null);
+  const [passengers, setPassengers] = useState<number>(0)
+
+  const handleDateChange = (newValue: Moment | null) => {
+    setDate(newValue);
+  };
+
+  const handlePassengersChange = (e: any) => {
+    const regex = /^[0-9\b]+$/;
+    if (e.target.value == "" || regex.test(e.target.value)) {
+      setPassengers(e.target.value);
+    }
+  }
+
+  const handleChangeState = (data: any[], key: string) => {
+    if(data) {
+      setCitiesData({ ...citiesData, [key]: data  })
+    } else {
+      setCitiesData({ ...citiesData, [key]: []})
+    }
+  }
+
+  const citiesMutation = useMutation(repo.getCities, {
     onSuccess:(data: any) => {
-      if(data) {
-        setData(data)
-      } else {
-        setData([])
-      }
+      handleChangeState(data, keyValue)
     }
   })
 
@@ -29,12 +59,12 @@ function Home() {
     setValue(newValue);
   };
 
-  const citiesMutation = (key: string) => {
-    citiesMut.mutateAsync(key)
+  const citiesMutationMutate = (key: string) => {
+    citiesMutation.mutateAsync(key)
   }
 
   useEffect(() => {
-    citiesMutation(value)
+    citiesMutationMutate(value)
   }, [debouncedValue])
   
   
@@ -43,19 +73,15 @@ function Home() {
       <HomeComponent.Title 
         title='Distance calculator'
       />
-      <Autocomplete
-        disablePortal
-        id="combo-box-demo"
-        options={data.map(el => el.name)}
-        sx={{ width: 300 }}
-        renderInput={(params) => ( 
-          <TextField 
-            {...params} 
-            value={value} 
-            onChange={e => handleChange(e.target.value)} 
-            label="City of origin" 
-          />
-        )}
+      <HomePageForm 
+        data={citiesData}
+        setKeyValue={setKeyValue}
+        value={value}
+        handleChange={handleChange}
+        date={date}
+        handleDateChange={handleDateChange}
+        passengers={passengers}
+        handlePassengersChange={handlePassengersChange}
       />
     </HomeComponent>
   );

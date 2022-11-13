@@ -2,6 +2,8 @@ import '../styles/globals.css'
 import '../styles/index.scss'
 import type { AppProps } from 'next/app'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { LocalizationProvider } from '@mui/x-date-pickers-pro';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 export default function App({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient({
@@ -16,7 +18,9 @@ export default function App({ Component, pageProps }: AppProps) {
   
   return ( 
     <QueryClientProvider client={queryClient}>
-      <Component {...pageProps} /> 
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <Component {...pageProps} /> 
+      </LocalizationProvider>
     </QueryClientProvider>
   )
 }
