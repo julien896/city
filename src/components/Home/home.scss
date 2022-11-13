@@ -9,13 +9,20 @@
     }
 
     .form-item {
-        margin-bottom: 20px;
+      margin-bottom: 20px;
     }
 
-    .mui-datepicker {
+    .mui-textfield {
         width: 100%;
         background: white;
-        box-shadow: rgb(100 100 111 / 20%) 0px 7px 29px 0px
+        box-shadow: rgb(100 100 111 / 20%) 0px 7px 29px 0px;
+        border-radius: 5px;
+    }
+
+    .error {
+        color: $red;
+        font-size: 15px;
+        padding-left: 5px;
     }
 
     .submit-btn {

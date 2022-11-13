@@ -17,7 +17,6 @@ export interface DataType {
 }
 export interface SelectedDataType {
   origin: City;
-  intermediate: City;
   destination: City
 }
 
@@ -64,9 +63,15 @@ function Home() {
     }
   })
 
-  const handleChange = (newValue: string) => {
+  const handleChange = (newValue: any) => {
     setValue(newValue)
-    formRef.current!.values[keyValue as keyof SelectedDataType] = newValue
+    if (keyValue === 'intermediate') { 
+      formRef.current!.values.intermediate = newValue
+    } else {
+      formRef.current!.values[keyValue as keyof SelectedDataType] = newValue
+    }
+    /* formRef.current!.values[keyValue as keyof SelectedDataType] = newValue */
+    
   };
 
   const citiesMutationMutate = (key: string) => {
@@ -76,7 +81,8 @@ function Home() {
   useEffect(() => {
     citiesMutationMutate(value)
   }, [debouncedValue])
-    
+
+  console.log(formRef)
   return (
     <HomeComponent>
       <HomeComponent.Title 

@@ -47,7 +47,6 @@ export function HomePageForm({
       innerRef={formRef}
     >
       {(formik) => (
-        /* @ts-ignore */
         <Form>
           <div className="input-con-btn">
             <div className="field-group">
@@ -59,15 +58,7 @@ export function HomePageForm({
                   options={data.origin.map(el => el.name)}
                   loading={isLoading}
                   onInputChange={(_, newValue: string) => handleChange(newValue)}
-                  sx={{ 
-                    width: '100%',
-                    '& .MuiInputBase-root': {
-                      background: 'white'
-                    },
-                    '& .MuiTextField-root': {
-                      boxShadow: 'rgb(100 100 111 / 20%) 0px 7px 29px 0px'
-                    }
-                  }}
+                  className='mui-textfield'
                   renderInput={(params) => ( 
                     <TextField 
                       {...params} 
@@ -81,20 +72,13 @@ export function HomePageForm({
 
               <HomeComponent.FormItemContainer>
                 <Autocomplete
+                  multiple
                   disablePortal
                   id="combo-box-demo"
                   onFocus={() => setKeyValue('intermediate')}
                   options={data.intermediate.map(el => el.name)}
-                  onInputChange={(_, newValue: string) => handleChange(newValue)}
-                  sx={{ 
-                    width: '100%',
-                    '& .MuiInputBase-root': {
-                      background: 'white'
-                    },
-                    '& .MuiTextField-root': {
-                      boxShadow: 'rgb(100 100 111 / 20%) 0px 7px 29px 0px'
-                    } 
-                  }}
+                  onChange={(_, newValue: any) => handleChange(newValue)}
+                  className='mui-textfield'
                   renderInput={(params) => ( 
                     <TextField 
                       {...params} 
@@ -113,15 +97,7 @@ export function HomePageForm({
                   onFocus={() => setKeyValue('destination')}
                   options={data.destination.map(el => el.name)}
                   onInputChange={(_, newValue: string) => handleChange(newValue)}
-                  sx={{ 
-                    width: '100%',
-                    '& .MuiInputBase-root': {
-                      background: 'white'
-                    },
-                    '& .MuiTextField-root': {
-                      boxShadow: 'rgb(100 100 111 / 20%) 0px 7px 29px 0px'
-                    } 
-                  }}
+                  className='mui-textfield'
                   renderInput={(params) => ( 
                     <TextField 
                       {...params} 
@@ -131,7 +107,8 @@ export function HomePageForm({
                     />
                   )}
                 />
-                <span className="error"><ErrorMessage name="destination" className="error" /></span>                
+                {formik.errors.destination &&
+                <span className="error"><ErrorMessage name="destination" className="error" /></span>}                
               </HomeComponent.FormItemContainer>
 
               <HomeComponent.FormItemContainer>
@@ -139,7 +116,7 @@ export function HomePageForm({
                   label="Date"
                   inputFormat="MM/dd/yyyy"
                   value={date}
-                  className="mui-datepicker"
+                  className="mui-textfield"
                   disablePast
                   onChange={handleDateChange}
                   renderInput={(params) => <TextField {...params} />}
@@ -151,15 +128,7 @@ export function HomePageForm({
                 <TextField
                   type="number"
                   label="Passengers"
-                  sx={{ 
-                    width: '100%',
-                    '& .MuiInputBase-root': {
-                      background: 'white'
-                    },
-                    '& .MuiTextField-root': {
-                      boxShadow: 'rgb(100 100 111 / 20%) 0px 7px 29px 0px'
-                    } 
-                  }}
+                  className='mui-textfield'
                   variant="outlined"
                   onChange={(e) => handlePassengersChange(e)}
                   defaultValue={0}

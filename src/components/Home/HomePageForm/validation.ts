@@ -6,13 +6,13 @@ export const validation: Yup.SchemaOf<HomePageFormType> = Yup.object().shape({
   origin: Yup.string()
     .label("Origin")
     .required('This field is required!'),
-  /*   intermediate: Yup.array()
+  intermediate: Yup.array()
     .of(Yup.string())
     .label("Intermediate")
-    .notRequired(), */
-  intermediate: Yup.string()
+    .notRequired(),
+  /*   intermediate: Yup.string()
     .label("Intermediate")
-    .required('This field is required!'),
+    .required('This field is required!'), */
   destination: Yup.string()
     .label("Destination")
     .required('This field is required!'),

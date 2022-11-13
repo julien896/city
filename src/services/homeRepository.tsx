@@ -6,7 +6,7 @@ export class HomeRepository {
     cities: () => ["cities"],
   };
 
-  getCities = (key: string) => {
+  getCities = (key: any) => {
     const res = [
       {
         name:'Paris',
@@ -110,7 +110,9 @@ export class HomeRepository {
       }
     ]
 
-    const filtered = res.filter((el:City) => el.name.toLowerCase().includes(key.toLowerCase()) )
+    const filtered = res.filter((el:City) => el.name.toLowerCase().includes(
+      typeof key !== 'string' ? key[key.length - 1].toLowerCase() :  key.toLowerCase()
+    ) )
 
     const promise = new Promise((resolve, reject) => {
       if(key.length > 0) {
