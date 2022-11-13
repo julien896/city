@@ -18,3 +18,14 @@ HomeComponent.Title = ({
 }) => (
   <h1>{title}</h1>
 )
+
+HomeComponent.FormItemContainer = ({
+  children
+} : {
+  children: React.ReactNode;
+}) => (
+  <div className="form-item">
+    {children}
+  </div>
+)
+

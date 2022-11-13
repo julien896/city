@@ -1,13 +1,14 @@
 /* import React, { Dispatch, Ref, SetStateAction } from "react"; */
-import React, { Dispatch, SetStateAction } from "react";
-import { Form, Formik } from "formik";
+import React, { Dispatch, Ref, SetStateAction } from "react";
+import { ErrorMessage, Form, Formik, FormikProps } from "formik";
 import { createInitialValues } from "./initialValues";
 import { HomePageFormType } from "./HomePageFormType";
-import { Autocomplete, TextField } from "@mui/material";
-/* import { validation } from "./validation"; */
+import { Autocomplete, Button, TextField } from "@mui/material";
+import { validation } from "./validation";
 import { DataType } from '../index';
 import { DesktopDatePicker } from "@mui/x-date-pickers";
 import { Moment } from "moment";
+import { HomeComponent } from "../HomeComponent";
 
 
 interface Props {
@@ -19,9 +20,9 @@ interface Props {
   handleChange: (newValue: string) => void;
   date: Moment | null;
   handleDateChange: (newValue: Moment | null) => void;
-  passengers: number;
   handlePassengersChange: (e: any) => void;
-  /* formRef: Ref<FormikProps<HomePageFormType>> | undefined; */
+  formRef: Ref<FormikProps<HomePageFormType>> | undefined;
+  isLoading: boolean;
 }
 
 export function HomePageForm({
@@ -32,9 +33,9 @@ export function HomePageForm({
   setKeyValue,
   date,
   handleDateChange,
-  passengers,
-  handlePassengersChange
-  /* formRef, */
+  handlePassengersChange,
+  formRef,
+  isLoading
 }: Props) {
 
 
@@ -42,80 +43,135 @@ export function HomePageForm({
     <Formik<HomePageFormType>
       initialValues={initialValues}
       onSubmit={() => console.log("")}
-      /*       innerRef={formRef}
-      onSubmit={onSubmit}
-      validationSchema={validation} */
+      validationSchema={validation}
+      innerRef={formRef}
     >
-      {() => (
-        <Form className="w-full">
+      {(formik) => (
+        /* @ts-ignore */
+        <Form>
           <div className="input-con-btn">
             <div className="field-group">
-              <Autocomplete
-                disablePortal
-                id="combo-box-demo"
-                onFocus={() => setKeyValue('origin')}
-                options={data.origin.map(el => el.name)}
-                sx={{ width: 300 }}
-                renderInput={(params) => ( 
-                  <TextField 
-                    {...params} 
-                    value={value} 
-                    onChange={e => handleChange(e.target.value)} 
-                    label="City of origin" 
-                  />
-                )}
-              />
-              <Autocomplete
-                disablePortal
-                id="combo-box-demo"
-                onFocus={() => setKeyValue('intermediate')}
-                options={data.intermediate.map(el => el.name)}
-                sx={{ width: 300 }}
-                renderInput={(params) => ( 
-                  <TextField 
-                    {...params} 
-                    value={value} 
-                    onChange={e => handleChange(e.target.value)} 
-                    label="Intermediate" 
-                  />
-                )}
-              />
-              <Autocomplete
-                disablePortal
-                id="combo-box-demo"
-                onFocus={() => setKeyValue('destination')}
-                options={data.destination.map(el => el.name)}
-                sx={{ width: 300 }}
-                renderInput={(params) => ( 
-                  <TextField 
-                    {...params} 
-                    value={value} 
-                    onChange={e => handleChange(e.target.value)} 
-                    label="Destination" 
-                  />
-                )}
-              />
-              <DesktopDatePicker
-                label="Travel date"
-                inputFormat="MM/dd/yyyy"
-                value={date}
-                disablePast
-                onChange={handleDateChange}
-                renderInput={(params) => <TextField {...params} />}
-              />
-              <TextField
-                type="text"
-                id="outlined-basic"
-                label="Outlined"
-                variant="outlined"
-                onChange={(e) => handlePassengersChange(e)}
-                defaultValue={passengers}
-                value={passengers}
-                inputProps={{ maxLength: 12 }}
-              />
+              <HomeComponent.FormItemContainer>
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  onFocus={() => setKeyValue('origin')}
+                  options={data.origin.map(el => el.name)}
+                  loading={isLoading}
+                  onInputChange={(_, newValue: string) => handleChange(newValue)}
+                  sx={{ 
+                    width: '100%',
+                    '& .MuiInputBase-root': {
+                      background: 'white'
+                    },
+                    '& .MuiTextField-root': {
+                      boxShadow: 'rgb(100 100 111 / 20%) 0px 7px 29px 0px'
+                    }
+                  }}
+                  renderInput={(params) => ( 
+                    <TextField 
+                      {...params} 
+                      value={value} 
+                      onChange={e => handleChange(e.target.value)} 
+                      label="Origin" 
+                    />
+                  )}
+                />
+              </HomeComponent.FormItemContainer>
+
+              <HomeComponent.FormItemContainer>
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  onFocus={() => setKeyValue('intermediate')}
+                  options={data.intermediate.map(el => el.name)}
+                  onInputChange={(_, newValue: string) => handleChange(newValue)}
+                  sx={{ 
+                    width: '100%',
+                    '& .MuiInputBase-root': {
+                      background: 'white'
+                    },
+                    '& .MuiTextField-root': {
+                      boxShadow: 'rgb(100 100 111 / 20%) 0px 7px 29px 0px'
+                    } 
+                  }}
+                  renderInput={(params) => ( 
+                    <TextField 
+                      {...params} 
+                      value={value} 
+                      onChange={e => handleChange(e.target.value)} 
+                      label="Intermediate" 
+                    />
+                  )}
+                />
+              </HomeComponent.FormItemContainer>
+
+              <HomeComponent.FormItemContainer>
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  onFocus={() => setKeyValue('destination')}
+                  options={data.destination.map(el => el.name)}
+                  onInputChange={(_, newValue: string) => handleChange(newValue)}
+                  sx={{ 
+                    width: '100%',
+                    '& .MuiInputBase-root': {
+                      background: 'white'
+                    },
+                    '& .MuiTextField-root': {
+                      boxShadow: 'rgb(100 100 111 / 20%) 0px 7px 29px 0px'
+                    } 
+                  }}
+                  renderInput={(params) => ( 
+                    <TextField 
+                      {...params} 
+                      value={value} 
+                      onChange={e => handleChange(e.target.value)} 
+                      label="Destination" 
+                    />
+                  )}
+                />
+                <span className="error"><ErrorMessage name="destination" className="error" /></span>                
+              </HomeComponent.FormItemContainer>
+
+              <HomeComponent.FormItemContainer>
+                <DesktopDatePicker
+                  label="Date"
+                  inputFormat="MM/dd/yyyy"
+                  value={date}
+                  className="mui-datepicker"
+                  disablePast
+                  onChange={handleDateChange}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+                <span className="error"><ErrorMessage name="date" className="error" /></span>                
+              </HomeComponent.FormItemContainer>
+
+              <HomeComponent.FormItemContainer>
+                <TextField
+                  type="number"
+                  label="Passengers"
+                  sx={{ 
+                    width: '100%',
+                    '& .MuiInputBase-root': {
+                      background: 'white'
+                    },
+                    '& .MuiTextField-root': {
+                      boxShadow: 'rgb(100 100 111 / 20%) 0px 7px 29px 0px'
+                    } 
+                  }}
+                  variant="outlined"
+                  onChange={(e) => handlePassengersChange(e)}
+                  defaultValue={0}
+                  inputProps={{ maxLength: 12 }}
+                />
+              </HomeComponent.FormItemContainer>
+              <span className="error"><ErrorMessage name="passengers" className="error" /></span>
             </div>
-            {/* <span className="error"><ErrorMessage name="email" className="error" /></span> */}
           </div>
+          <Button className="submit-btn" type="submit">
+            Confirm
+          </Button>
         </Form>
       )}
     </Formik>
