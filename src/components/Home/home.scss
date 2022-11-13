@@ -10,6 +10,12 @@
 
     .form-item {
       margin-bottom: 20px;
+
+      input[type=number]::-webkit-inner-spin-button, 
+      input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+      }
     }
 
     .mui-textfield {
@@ -17,6 +23,19 @@
         background: white;
         box-shadow: rgb(100 100 111 / 20%) 0px 7px 29px 0px;
         border-radius: 5px;
+    }
+
+    .Mui-focused {
+        color: $blue;
+        border-color: $blue !important;
+    }
+
+    .MuiChip-root {
+        background: $blue;
+        color: white;
+        svg {
+            fill: white
+        }
     }
 
     .error {

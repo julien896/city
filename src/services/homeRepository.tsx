@@ -111,7 +111,9 @@ export class HomeRepository {
     ]
 
     const filtered = res.filter((el:City) => el.name.toLowerCase().includes(
-      typeof key !== 'string' ? key[key.length - 1].toLowerCase() :  key.toLowerCase()
+      typeof key !== 'string' ? 
+        (key.length !== 0 ? key[key.length - 1].toLowerCase() : '') :  
+        key.toLowerCase()
     ) )
 
     const promise = new Promise((resolve, reject) => {
