@@ -1,6 +1,12 @@
-export class HomeRepository {
+import { City } from '../models/City';
 
-  getCities = () => {
+export const getCitiesMapper = (x: any): City => new City(x);
+export class HomeRepository {
+  keys = {
+    cities: () => ["cities"],
+  };
+
+  getCities = (key: string) => {
     const res = [
       {
         name:'Paris',
@@ -102,8 +108,19 @@ export class HomeRepository {
         latitude: 43.529742,
         longitude: 5.447427
       }
-
     ]
+
+    const filtered = res.filter((el:City) => el.name.toLowerCase().includes(key.toLowerCase()) )
+
+    const promise = new Promise((resolve, reject) => {
+      if(key.length > 0) {
+        resolve(filtered.map(getCitiesMapper))
+      } else {
+        resolve([])
+      }
+    })
+
+    return promise
   }
 }
 

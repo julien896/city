@@ -1,7 +1,22 @@
 import '../styles/globals.css'
 import '../styles/index.scss'
 import type { AppProps } from 'next/app'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+        retry: false,
+      },
+    },
+  })
+  
+  return ( 
+    <QueryClientProvider client={queryClient}>
+      <Component {...pageProps} /> 
+    </QueryClientProvider>
+  )
 }

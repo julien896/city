@@ -1,10 +1,20 @@
 import * as React from 'react';
 
 
-export const MainComponent = ({
+export const HomeComponent = ({
   children
 }: {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }) => (
-  <>{children}</>
+  <div className="home-container">
+    {children}
+  </div>
+)
+
+HomeComponent.Title = ({
+  title
+} : {
+  title: string
+}) => (
+  <h1>{title}</h1>
 )

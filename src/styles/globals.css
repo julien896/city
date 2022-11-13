@@ -4,6 +4,8 @@ body {
   margin: 0;
   background-color: #ECEBF3;
   font-family: 'Mukta', sans-serif;
+  display: flex;
+  justify-content: center;
 }
 
 a {
