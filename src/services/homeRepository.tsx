@@ -1,6 +1,24 @@
+import { Moment } from 'moment';
 import { City } from '../models/City';
+import { haversineDistance } from '../components/base/HaversineFormula';
+
+export interface ITravelData {
+  origin: City;
+  intermediate?: string[];
+  destination: City;
+  date: Moment | null;
+  passengers: number;
+}
+
+export interface ITravelResponse {
+  tour: string; 
+  km: number;
+}
 
 export const getCitiesMapper = (x: any): City => new City(x);
+
+export const setTravelData = (x: ITravelData) => x;
+
 export class HomeRepository {
   keys = {
     cities: () => ["cities"],
@@ -122,6 +140,20 @@ export class HomeRepository {
       } else {
         resolve([])
       }
+    })
+
+    return promise
+  }
+
+  createTravel = (x: ITravelData) => {
+    console.log(x)
+    const calculatedDistance = haversineDistance(
+      {lat: x.origin.latitude, lng: x.origin.longitude}, 
+      {lat: x.destination.latitude, lng: x.destination.longitude}
+    )
+
+    const promise: Promise<ITravelResponse> = new Promise((resolve, reject) => {
+      resolve({ tour: `${x.origin.name} - ${x.destination.name} `, km: calculatedDistance / 1000 })
     })
 
     return promise

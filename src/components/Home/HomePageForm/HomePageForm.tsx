@@ -13,6 +13,7 @@ import { HomeComponent } from "../HomeComponent";
 
 interface Props {
   /* onSubmit: (value: HomePageFormType) => Promise<void>; */
+  onSubmit: (value: HomePageFormType) => void;
   initialValues?: HomePageFormType;
   data: DataType;
   value: string;
@@ -35,14 +36,15 @@ export function HomePageForm({
   handleDateChange,
   handlePassengersChange,
   formRef,
-  isLoading
+  isLoading,
+  onSubmit
 }: Props) {
 
 
   return (
     <Formik<HomePageFormType>
       initialValues={initialValues}
-      onSubmit={() => console.log("")}
+      onSubmit={onSubmit}
       validationSchema={validation}
       innerRef={formRef}
     >

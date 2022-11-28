@@ -1,7 +1,7 @@
 
 import React, { Ref, useEffect, useRef, useState } from 'react'
 import { HomeComponent } from './HomeComponent';
-import { HomeRepository } from '../../services/homeRepository';
+import { HomeRepository, ITravelData } from '../../services/homeRepository';
 import { useDebounce } from '../../hooks/useDebounce';
 import { useMutation } from 'react-query';
 import { City } from '../../models/City';
@@ -63,26 +63,40 @@ function Home() {
     }
   })
 
+  const createTravelMutation = useMutation(repo.createTravel)
+
   const handleChange = (newValue: any) => {
     setValue(newValue)
+
     if (keyValue === 'intermediate') { 
       formRef.current!.values.intermediate = newValue
     } else {
       formRef.current!.values[keyValue as keyof SelectedDataType] = newValue
-    }
-    /* formRef.current!.values[keyValue as keyof SelectedDataType] = newValue */
-    
+    }    
   };
 
   const citiesMutationMutate = (key: string) => {
     citiesMutation.mutateAsync(key)
   }
 
+  const travelDataMutate = (x: ITravelData) => {
+    createTravelMutation.mutateAsync(x)
+  }
+
+  const handleSubmit = (value: HomePageFormType) => {
+    travelDataMutate({
+      origin: citiesData.origin.filter(el => el.name === value.origin)[0],
+      intermediate: value.intermediate!,
+      destination: citiesData.destination.filter(el => el.name === value.destination)[0],
+      date: value.date,
+      passengers: value.passengers,
+    })
+  }
+
   useEffect(() => {
     citiesMutationMutate(value)
   }, [debouncedValue])
 
-  console.log(formRef)
   return (
     <HomeComponent>
       <HomeComponent.Title 
@@ -93,6 +107,7 @@ function Home() {
         data={citiesData}
         setKeyValue={setKeyValue}
         value={value}
+        onSubmit={handleSubmit}
         handleChange={handleChange}
         date={date}
         handleDateChange={handleDateChange}
